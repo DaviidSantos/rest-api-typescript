@@ -6,12 +6,15 @@ import compression from "compression";
 import cors from "cors";
 import dotenv from 'dotenv'
 import mongoose from "mongoose";
+import router from './router'
+import morgan from "morgan";
 
 dotenv.config()
 
 const PORT = process.env.PORT || 3030
 const app = express();
 
+app.use(morgan("common"));
 app.use(
     cors({
         credentials: true,
@@ -31,3 +34,5 @@ server.listen(PORT, () => {
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGO_URL)
 mongoose.connection.on("error", (error: Error) => console.log(error));
+
+app.use('/', router())
